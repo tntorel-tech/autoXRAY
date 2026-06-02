@@ -162,33 +162,6 @@ else
     exit 1
 fi
 
-certbot certonly --webroot -w /var/www/html \
-  -d $DOMAIN \
-  -m mail@$DOMAIN \
-  --agree-tos --non-interactive \
-  --deploy-hook "systemctl reload nginx"
-
-RET=$?
-
-if [ $RET -eq 0 ]; then
-  echo -e "\n${GRN}========================================"
-  echo    "✅  Команда certbot успешно выполнена"
-  echo    "✅  Сертификат https от letsencrypt ПОЛУЧЕН"
-  echo    "========================================"
-  echo -e "${NC}"
-else
-  echo -e "\n${RED}========================================"
-  echo    "❌  CERTBOT ЗАВЕРШИЛСЯ С ОШИБКОЙ"
-  echo    "❌  Сертификат https от letsencrypt НЕ ПОЛУЧЕН!"
-  echo    "❌  Смотрите выше логи процесса получения сертификата"
-  echo    "❌  Код возврата: $RET"
-  echo    "========================================"
-  echo -e "${NC}"
-  exit 1
-fi
-# Блок CERTBOT - END
-
-
 path_subpage=$(openssl rand -base64 15 | tr -dc 'A-Za-z0-9' | head -c 20)
 
 # конфиг nginx
